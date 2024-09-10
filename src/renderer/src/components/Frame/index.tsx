@@ -1,10 +1,23 @@
-import { Minimize2, Minus, Square, X } from 'lucide-react'
+import { FileSpreadsheet, Home, Minimize2, Minus, Plus, Square, X } from 'lucide-react'
 import './styles.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ActionButton } from './ActionButton'
+import { useFrameStore } from '@renderer/store/frameStore'
+import { NavigationButton } from './NavigationButton'
 
 export function Frame() {
   const [isMaximized, setIsMaximized] = useState(true)
+  const { activeFile, openedFiles } = useFrameStore((state) => state)
+
+  useEffect(() => {
+    window.electron.ipcRenderer.on('window-unmaximize', (_, isMaximized) => {
+      setIsMaximized(isMaximized)
+    })
+
+    return () => {
+      window.electron.ipcRenderer.removeAllListeners('window-unmaximize')
+    }
+  }, [])
 
   const handleMinimize = () => {
     window.electron.ipcRenderer.send('minimize-window')
@@ -20,7 +33,22 @@ export function Frame() {
   }
 
   return (
-    <div className="frame h-10 w-full bg-custombg flex justify-end">
+    <div className="frame h-10 w-full bg-custombg flex justify-between">
+      <div className="p-1 flex gap-1">
+        <NavigationButton isActive>
+          <Home className="size-4" />
+        </NavigationButton>
+        {openedFiles.map((file) => (
+          <NavigationButton key={file}>
+            <FileSpreadsheet className="size-4" />
+            <span className="text-xs">{file}</span>
+            <X className="opacity-0 group-hover:opacity-100 size-3" />
+          </NavigationButton>
+        ))}
+        <NavigationButton>
+          <Plus className="size-4" />
+        </NavigationButton>
+      </div>
       <div className="flex">
         <ActionButton onClick={handleMinimize}>
           <Minus className="size-3" />

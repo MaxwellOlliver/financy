@@ -1,8 +1,4 @@
-import {
-  BrowserWindow,
-  IpcMainInvokeEvent,
-  BrowserWindowConstructorOptions,
-} from 'electron'
+import { BrowserWindow, IpcMainInvokeEvent, BrowserWindowConstructorOptions } from 'electron'
 
 export type BrowserWindowOrNull = Electron.BrowserWindow | null
 
@@ -14,4 +10,8 @@ export interface WindowCreationByIPC {
   channel: string
   window(): BrowserWindowOrNull
   callback(window: BrowserWindow, event: IpcMainInvokeEvent): void
+}
+
+export interface SetupFrame {
+  window: BrowserWindow
 }

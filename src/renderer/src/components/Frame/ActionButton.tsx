@@ -10,8 +10,8 @@ export function ActionButton({ children, isClose, ...props }: ActionButtonProps)
     <button
       type="button"
       className={cn(
-        'frame-button px-3 text-secondary hover:bg-custombg-600 transition-colors duration-200',
-        isClose && 'bg-[#C94A4A] hover:bg-[#d45858]'
+        'frame-button px-3 text-secondary hover:bg-custombg-600 transition-colors duration-200 outline-none focus:bg-custombg-600',
+        isClose && 'hover:bg-[#C94A4A] focus:bg-[#C94A4A]'
       )}
       {...props}
     >

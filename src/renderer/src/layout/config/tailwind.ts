@@ -4,7 +4,7 @@ import { theme } from '../theme'
 export const tailwindConfig: Config['theme'] = {
   colors: theme.colors,
   fontFamily: {
-    sans: ['Inter', 'sans-serif']
+    sans: ['"Bai Jamjuree"', 'sans-serif']
   },
   keyframes: {
     'scale-in': {
