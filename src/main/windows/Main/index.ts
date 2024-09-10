@@ -8,16 +8,20 @@ export async function MainWindow() {
   const window = createWindow({
     id: 'main',
     title: 'Financy',
-    fullscreenable: true,
+    fullscreenable: false,
     show: false,
     center: true,
     movable: true,
     resizable: false,
-    alwaysOnTop: true,
+    alwaysOnTop: false,
     autoHideMenuBar: true,
+    frame: false,
     maximizable: true,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js')
+      preload: join(__dirname, '../preload/index.js'),
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: false
     }
   })
 
