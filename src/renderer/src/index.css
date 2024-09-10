@@ -5,6 +5,7 @@
 @layer base {
   html {
     @apply text-secondary;
+    @apply bg-custombg;
   }
 
   @font-face {
