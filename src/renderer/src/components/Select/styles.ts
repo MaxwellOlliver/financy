@@ -6,8 +6,7 @@ export const selectClassNames: (props: {
 }) => ClassNamesConfig<unknown, boolean, GroupBase<unknown>> = ({ error }) => ({
   control: (props) =>
     cn(
-      'border border-gray-300 px-3 py-2 rounded-md text-sm w-full hover:border-gray-400 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary',
-      props.isFocused && 'border-primary',
+      'bg-custombg-500 px-3 py-3 rounded-md text-sm w-full focus-within:border-primary focus-within:ring-1 focus-within:ring-primary',
       props.isDisabled && 'pointer-events-none bg-gray-100',
       error &&
         !props.isDisabled &&
@@ -21,17 +20,17 @@ export const selectClassNames: (props: {
       isFocused && 'bg-primary-100',
       isSelected && 'bg-primary-600 text-white'
     ),
-  noOptionsMessage: () => 'text-gray-400 mx-2 my-3 font-normal',
-  menu: () =>
-    'border mt-1 border-gray-300 rounded-md shadow-md z-10 bg-white overflow-hidden text-sm ',
+  noOptionsMessage: () => 'text-custombg-200 mx-2 my-3 font-normal',
+  menu: () => 'bg-custombg-500 mt-1 shadow-md z-10 overflow-hidden text-sm rounded-md',
   groupHeading: () => 'text-sm text-gray-500 font-medium px-2 py-1 font-normal',
   group: () => 'py-1 last:rounded-b-md',
-  placeholder: () => 'text-gray-400',
+  placeholder: () => 'text-custombg-300',
   multiValue: () => 'bg-primary-100 rounded-md px-1',
   multiValueRemove: () => 'cursor-pointer ml-1',
   valueContainer: () => 'gap-1',
   loadingIndicator: () => 'text-primary',
-  menuList: () => 'scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-gray-200',
+  menuList: () =>
+    'scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-gray-200 bg-transparent border-none',
   loadingMessage: () => 'py-2'
 })
 

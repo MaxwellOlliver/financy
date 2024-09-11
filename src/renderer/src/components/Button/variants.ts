@@ -7,7 +7,7 @@ export const buttonVariants = tv({
       'text-white',
       'text-base',
       'px-4',
-      'py-2',
+      'py-3',
       'h-fit',
       'relative',
       'overflow-hidden',
@@ -19,20 +19,10 @@ export const buttonVariants = tv({
       'flex',
       'justify-center',
       'select-none',
-      'outline-none',
-      'focus:ring-2',
-      'focus:ring-offset-2'
+      'outline-none'
     ]
   },
   variants: {
-    color: {
-      primary: 'focus:ring-primary',
-      secondary: 'focus:ring-secondary',
-      success: 'focus:ring-success',
-      warning: 'focus:ring-warning',
-      error: 'focus:ring-error',
-      info: 'focus:ring-info'
-    },
     size: {
       sm: {
         icon: 'size-3',
@@ -40,7 +30,7 @@ export const buttonVariants = tv({
       },
       md: {
         icon: 'size-4',
-        base: 'px-4 py-2 text-sm'
+        base: 'px-4 py-3 text-sm'
       },
       lg: {
         icon: 'size-5',

@@ -24,6 +24,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "@tanstack/react-table": "^8.20.5",
     "clsx": "^2.1.1",
     "electron-extension-installer": "^1.2.0",
     "electron-router-dom": "^1.0.5",

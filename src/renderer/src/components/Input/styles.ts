@@ -9,10 +9,8 @@ export const inputClassNames = (props: { error: boolean; disabled: boolean }) =>
         'w-full',
         'h-fit',
         'text-base',
-        'border',
         'px-3',
-        'bg-white',
-        'border-gray-300',
+        'bg-custombg-500',
         'hover:border-gray-400',
         'transition-colors',
         'duration-200',
@@ -28,6 +26,6 @@ export const inputClassNames = (props: { error: boolean; disabled: boolean }) =>
       props.disabled && 'pointer-events-none bg-gray-100'
     ),
     input:
-      'outline-none py-2 placeholder:text-gray-400 w-full text-sm no-arrow mx-0.5 transition-colors duration-200'
+      'outline-none bg-custombg-500 py-3 placeholder:text-custombg-300 w-full text-sm no-arrow mx-0.5 transition-colors duration-200'
   }
 }

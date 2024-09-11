@@ -8,7 +8,7 @@ export function createStore<TState extends Record<string, any>>(
   createInitialState: (setState: SetStateFn<TState>, getState: () => TState) => TState
 ) {
   let state: TState
-  let listeners: Set<Listener>
+  const listeners: Set<Listener> = new Set()
 
   function notifyListeners() {
     listeners.forEach((listener) => listener())
@@ -42,7 +42,6 @@ export function createStore<TState extends Record<string, any>>(
   }
 
   state = createInitialState(setState, getState)
-  listeners = new Set()
 
   return useStore
 }
