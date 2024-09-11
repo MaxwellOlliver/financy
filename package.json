@@ -29,8 +29,12 @@
     "electron-router-dom": "^1.0.5",
     "electron-updater": "^6.1.7",
     "lucide-react": "^0.439.0",
+    "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.26.2",
-    "tailwind-merge": "^2.5.2"
+    "react-select": "^5.8.0",
+    "remask": "^1.2.2",
+    "tailwind-merge": "^2.5.2",
+    "tailwind-variants": "^0.2.1"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",

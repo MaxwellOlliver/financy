@@ -12,7 +12,18 @@ export const theme = {
       800: '#75280b',
       900: '#461807'
     },
-    secondary: '#FFFCF2',
+    secondary: {
+      DEFAULT: '#FFFCF2',
+      100: '#ffffff',
+      200: '#FFFCF2',
+      300: '#f8f6e9',
+      400: '#f1efdf',
+      500: '#eae8d6',
+      600: '#e3e1cc',
+      700: '#dcdac3',
+      800: '#d5d2b9',
+      900: '#cecbb0'
+    },
     custombg: {
       DEFAULT: '#252422',
       100: '##dad9d7',

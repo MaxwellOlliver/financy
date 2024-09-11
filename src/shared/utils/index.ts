@@ -14,3 +14,7 @@ const appId = `com.${authorInKebabCase}.${name}`.toLowerCase()
 export function makeAppId(id: string = appId): string {
   return id
 }
+
+export function removeQuotes(str: string) {
+  return str.replace(/^"(.+)"$/, '$1')
+}
