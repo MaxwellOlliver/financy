@@ -1,5 +1,5 @@
-import { writeFileSync } from 'fs'
 import { removeQuotes } from '../../utils'
+import { v4 as uuidv4 } from 'uuid'
 
 export type Financy = {
   version: string
@@ -10,14 +10,20 @@ export type Financy = {
     updatedAt: string
   }
   purchases: {
+    id: string
     purchaseName: string
     value: number
     category: string
   }[]
 }
 
+export interface CreateFinancyProps {
+  name: string
+  id?: string
+}
+
 const requiredProjectKeys = ['id', 'name', 'createdAt', 'updatedAt']
-const requiredPurchaseKeys = ['purchaseName', 'value', 'category']
+const requiredPurchaseKeys = ['id', 'purchaseName', 'value', 'category']
 
 function getKeyValue(line: string) {
   const lineData = line.trim().match(/^(\w+)="(.+)"$/)
@@ -68,7 +74,7 @@ function parser(content: string) {
   })
 
   const purchases = lines.slice(purchasesTag + 1).map((line) => {
-    const [purchaseName, value, category] = line
+    const [id, purchaseName, value, category] = line
       .replace('- ', '')
       .split(';')
       .map((part) => {
@@ -82,6 +88,7 @@ function parser(content: string) {
       })
 
     return {
+      id: removeQuotes(id),
       purchaseName: removeQuotes(purchaseName),
       value: Number(removeQuotes(value)),
       category: removeQuotes(category)
@@ -91,7 +98,21 @@ function parser(content: string) {
   return { version, project: project as Financy['project'], purchases }
 }
 
+function create({ name, id }: CreateFinancyProps) {
+  return {
+    version: '1.0',
+    project: {
+      id: id ?? uuidv4(),
+      name,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    purchases: []
+  }
+}
+
 export const FinancyFileParser = {
+  create,
   toObject: async (content: string | Blob) => {
     if (typeof content === 'string') {
       return parser(content)
@@ -111,15 +132,10 @@ export const FinancyFileParser = {
     const purchases = data.purchases
       .map(
         (purchase) =>
-          `- PURCHASE_NAME="${purchase.purchaseName}"; VALUE="${purchase.value}"; CATEGORY="${purchase.category}"`
+          `- ID="${purchase.id}"; PURCHASE_NAME="${purchase.purchaseName}"; VALUE="${purchase.value}"; CATEGORY="${purchase.category}"`
       )
       .join('\n')
 
     return `#VERSION="${data.version}"\n\n[PROJECT]\n${project}\n\n[PURCHASES]\n${purchases}`
-  },
-  toFile: (data: Financy, path: string) => {
-    const content = FinancyFileParser.toString(data)
-
-    writeFileSync(path.endsWith('.fy') ? path : `${path}.fy`, content)
   }
 }

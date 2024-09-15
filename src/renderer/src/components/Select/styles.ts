@@ -16,8 +16,8 @@ export const selectClassNames: (props: {
   dropdownIndicator: () => 'text-gray-400',
   option: ({ isFocused, isSelected }) =>
     cn(
-      'cursor-pointer p-2 transition-colors duration-200',
-      isFocused && 'bg-primary-100',
+      'cursor-pointer p-3 transition-colors duration-200',
+      isFocused && 'bg-custombg-400',
       isSelected && 'bg-primary-600 text-white'
     ),
   noOptionsMessage: () => 'text-custombg-200 mx-2 my-3 font-normal',

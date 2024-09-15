@@ -5,6 +5,7 @@ import {
   DollarSign,
   FerrisWheel,
   Flower2,
+  Gamepad,
   GraduationCap,
   HeartPulse,
   House,
@@ -50,6 +51,12 @@ export const categories = [
     value: 'entertainment',
     icon: FerrisWheel,
     color: '#c99e5d'
+  },
+  {
+    name: 'Jogos',
+    value: 'games',
+    icon: Gamepad,
+    color: '#f5c25e'
   },
   {
     name: 'Vestuário',

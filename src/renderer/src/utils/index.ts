@@ -18,15 +18,11 @@ export function formatCurrency(
   currency: 'USD' | 'BRL' | 'EUR' = 'BRL',
   currencySign = false
 ) {
-  if (typeof value === 'number') {
-    value = (value as number).toFixed(2)
-  }
-
   if (value === '') {
     return value
   }
 
-  const cleanValue = value.replace(/\D/g, '')
+  const cleanValue = typeof value === 'string' ? value.replace(/\D/g, '') : value.toString()
   const numberValue = parseInt(cleanValue, 10)
 
   if (currency === 'BRL') {

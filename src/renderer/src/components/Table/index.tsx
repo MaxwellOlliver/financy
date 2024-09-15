@@ -136,14 +136,16 @@ export function Table({ columns, data }: TableProps) {
           </tbody>
         </table>
       </div>
-      <footer className="flex items-center justify-between gap-4 flex-wrap max-md:flex-col max-md:items-start">
-        <Pagination
-          currentPage={table.getState().pagination.pageIndex + 1}
-          onPageChange={(page) => table.setPageIndex(page - 1)}
-          totalPages={Math.ceil(table.getRowCount() / table.getState().pagination.pageSize) || 1}
-          disabled={table.getRowCount() <= 9}
-        />
-      </footer>
+      {(Math.ceil(table.getRowCount() / table.getState().pagination.pageSize) || 1) > 1 && (
+        <footer className="flex items-center justify-between gap-4 flex-wrap max-md:flex-col max-md:items-start">
+          <Pagination
+            currentPage={table.getState().pagination.pageIndex + 1}
+            onPageChange={(page) => table.setPageIndex(page - 1)}
+            totalPages={Math.ceil(table.getRowCount() / table.getState().pagination.pageSize) || 1}
+            disabled={table.getRowCount() <= 9}
+          />
+        </footer>
+      )}
     </div>
   )
 }

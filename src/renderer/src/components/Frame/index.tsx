@@ -2,15 +2,17 @@ import { FileSpreadsheet, Home, Minimize2, Minus, Plus, Square, X } from 'lucide
 import './styles.css'
 import { Fragment, useEffect, useState } from 'react'
 import { ActionButton } from './ActionButton'
-import { useFrameStore } from '@renderer/store/frameStore'
 import { NavigationButton } from './NavigationButton'
 import { IPC } from '@shared/constants/ipc'
 import { cn } from '@renderer/utils'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useFileBuilderNavigationStore } from '@renderer/store/fileBuilderNavigationStore'
+import { v4 } from 'uuid'
 
 export function Frame() {
   const [isMaximized, setIsMaximized] = useState(true)
-  const { openedFiles } = useFrameStore((state) => state)
+  const openedFiles = useFileBuilderNavigationStore((s) => s.tabs)
+  const addTab = useFileBuilderNavigationStore((s) => s.addTab)
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -42,6 +44,13 @@ export function Frame() {
     navigate(`/builder/${encodeURIComponent(id)}`)
   }
 
+  const handleOpenNewFile = () => {
+    const id = v4()
+
+    addTab(id, 'Novo financy')
+    handleNavigate(id)
+  }
+
   return (
     <div className="w-screen h-screen grid grid-rows-[3rem_1fr] bg-custombg ">
       <div className="frame h-12 w-full bg-custombg flex justify-between">
@@ -50,16 +59,15 @@ export function Frame() {
             <Home className="size-4" />
           </NavigationButton>
           <div className={cn('divider  h-[30%] w-[1px] bg-secondary opacity-50')}></div>
-          {openedFiles.map((file) => {
+          {openedFiles.map((tab) => {
             return (
-              <Fragment key={file}>
+              <Fragment key={tab.id}>
                 <NavigationButton
-                  key={file}
-                  onClick={() => handleNavigate(file)}
-                  isActive={location.pathname === `/builder/${encodeURIComponent(file)}`}
+                  onClick={() => handleNavigate(tab.id)}
+                  isActive={location.pathname === `/builder/${encodeURIComponent(tab.id)}`}
                 >
                   <FileSpreadsheet className="size-4" />
-                  <span className="text-xs">{file}</span>
+                  <span className="text-xs">{tab.name}</span>
                   <X className="opacity-0 ml-2 group-hover:opacity-100 size-3" />
                 </NavigationButton>
 
@@ -67,7 +75,7 @@ export function Frame() {
               </Fragment>
             )
           })}
-          <NavigationButton>
+          <NavigationButton onClick={handleOpenNewFile}>
             <Plus className="size-4" />
           </NavigationButton>
         </div>

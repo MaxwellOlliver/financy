@@ -1,13 +1,23 @@
 import { Button } from '@renderer/components/Button'
+import { fileBuilderEventBus } from '@renderer/helpers/events'
 import { cn } from '@renderer/utils'
+import { debounce } from 'lodash'
 import { Filter, MoreHorizontal, Search } from 'lucide-react'
+import { ChangeEvent, useCallback } from 'react'
 
 export function FormHeader() {
+  const handleSearch = (e: ChangeEvent) => {
+    fileBuilderEventBus.emit('search', { search: (e.target as HTMLInputElement).value })
+  }
+
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, 400), [])
+
   return (
     <div className="w-full flex items-center justify-between">
       <div className="flex gap-2 items-center">
         <Search className="text-secondary size-5" />
         <input
+          onChange={debouncedHandleSearch}
           type="text"
           placeholder="Pesquisar"
           className={cn(
