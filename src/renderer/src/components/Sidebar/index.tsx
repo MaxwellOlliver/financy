@@ -9,7 +9,6 @@ export function Sidebar() {
   const navigate = useNavigate()
 
   const activeSidebarItem = useMemo(() => {
-    console.log(location.pathname)
     return sidebarItems.find((item) => item.path === location.pathname)
   }, [location.pathname])
 

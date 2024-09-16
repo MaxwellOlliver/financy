@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Body } from './Body'
 import { Header } from './Header'
 import { useEffect } from 'react'

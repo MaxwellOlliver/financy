@@ -44,8 +44,8 @@ export const tailwindConfig: Config['theme'] = {
     'slide-leave': 'slide-leave 0.2s cubic-bezier(0.21, 1.02, 0.73, 1) forwards'
   },
   boxShadow: {
-    'border-primary': 'inset 0 0 0 2px #2C6E49',
-    'border-secondary': 'inset 0 0 0 2px #8B4513',
+    'border-primary': 'inset 0 0 0 2px #EB5E28',
+    'border-secondary': 'inset 0 0 0 2px #FFFCF2',
     'border-success': 'inset 0 0 0 2px #10B981',
     'border-warning': 'inset 0 0 0 2px #F59E0B',
     'border-error': 'inset 0 0 0 2px #EF4444',

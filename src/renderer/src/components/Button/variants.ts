@@ -76,7 +76,7 @@ export const buttonVariants = tv({
       color: 'secondary',
       variant: 'solid',
       class: {
-        base: ['bg-secondary', 'text-white', 'hover:bg-secondary-700', 'active:bg-secondary-800']
+        base: ['bg-secondary', 'text-custombg', 'hover:bg-secondary-700', 'active:bg-secondary-800']
       }
     },
     {

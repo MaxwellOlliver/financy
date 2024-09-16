@@ -20,7 +20,7 @@ type FinancyItemData = {
 
 const schema = yup.object().shape({
   purchaseName: yup.string().required('Nome é obrigatório'),
-  value: yup.number().required('Valor é obrigatório'),
+  value: yup.number().required('Valor é obrigatório').min(1, 'Valor deve ser maior que R$ 0,00'),
   category: yup.object().required('Categoria é obrigatória')
 }) as yup.ObjectSchema<FinancyItemData>
 
@@ -64,7 +64,7 @@ export function Form() {
   return (
     <form
       onSubmit={handleSubmit(handleAddPurchase)}
-      className="bg-custombg-600 w-full flex gap-2 p-2 rounded-md items-center"
+      className="bg-custombg-600 w-full flex gap-2 p-2 rounded-md items-start"
     >
       <Input
         placeholder="Local"

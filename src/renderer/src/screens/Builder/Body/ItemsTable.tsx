@@ -8,21 +8,61 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+type Filter = {
+  category?: string
+  minValue?: number
+  maxValue?: number
+}
+
 export function ItemsTable() {
   const id = useParams<{ id: string }>().id
   const getPurchases = useFileBuilderStore((s) => s.getPurchases)
 
   const [purchases, setPurchases] = useState<PurchaseData[]>(() => getPurchases(id!) ?? [])
+  const [filter, setFilter] = useState<Filter>({})
+
+  const hasFilter =
+    Object.keys(filter).length > 0 || filter.category || !!filter.minValue || !!filter.maxValue
+
+  const updatePurchases = () => {
+    const purchases = getPurchases(id!)
+
+    if (!hasFilter) {
+      setPurchases(purchases)
+      return
+    }
+
+    setPurchases(
+      purchases.filter((purchase) => {
+        if (filter.category && purchase.category !== filter.category) return false
+        if (!!filter.minValue && purchase.value < filter.minValue) return false
+        if (!!filter.maxValue && purchase.value > filter.maxValue) return false
+
+        return true
+      })
+    )
+  }
 
   useEffect(() => {
-    const addPurchaseListener = ({ projectId, purchase }) => {
+    if (!id) return
+
+    setPurchases(getPurchases(id))
+  }, [id])
+
+  useEffect(() => {
+    if (!id) return
+
+    updatePurchases()
+  }, [filter])
+
+  useEffect(() => {
+    const addPurchaseListener = ({ projectId }) => {
       if (projectId === id) {
-        setPurchases((prev) => [...prev, purchase])
+        updatePurchases()
       }
     }
 
     const searchItemsListener = ({ search }) => {
-      console.log('chamou', search)
       if (!id) return
 
       if (search === '') {
@@ -35,14 +75,23 @@ export function ItemsTable() {
         )
       }
     }
+
+    const filterItemsListener = (filter) => {
+      if (!id) return
+
+      setFilter(filter)
+    }
+
     fileBuilderEventBus.on('add-purchase', addPurchaseListener)
     fileBuilderEventBus.on('search', searchItemsListener)
+    fileBuilderEventBus.on('filter', filterItemsListener)
 
     return () => {
       fileBuilderEventBus.off('add-purchase', addPurchaseListener)
       fileBuilderEventBus.off('search', searchItemsListener)
+      fileBuilderEventBus.off('filter', filterItemsListener)
     }
-  }, [id])
+  }, [id, filter])
 
   const columns = useMemo(() => {
     const columnHelper = createColumnHelper<PurchaseData>()
