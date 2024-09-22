@@ -33,7 +33,7 @@ export function FilterForm({ onToggle }: FilterFormProps) {
     control,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors, dirtyFields }
   } = useForm<FormData>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -47,7 +47,14 @@ export function FilterForm({ onToggle }: FilterFormProps) {
       minValue: minValue
     }
 
-    fileBuilderEventBus.emit('filter', filter)
+    const dirtyFilter = Object.keys(dirtyFields).reduce((acc, key) => {
+      if (dirtyFields[key]) {
+        acc[key] = filter[key]
+      }
+      return acc
+    }, {})
+
+    fileBuilderEventBus.emit('filter', dirtyFilter)
     onToggle()
   }
 

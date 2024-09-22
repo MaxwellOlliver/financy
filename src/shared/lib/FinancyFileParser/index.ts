@@ -23,7 +23,23 @@ export interface CreateFinancyProps {
 }
 
 const requiredProjectKeys = ['id', 'name', 'createdAt', 'updatedAt']
-const requiredPurchaseKeys = ['id', 'purchaseName', 'value', 'category']
+const requiredPurchaseKeys = ['ID', 'PURCHASE_NAME', 'VALUE', 'CATEGORY']
+
+function snakeToCamel(s: string) {
+  const words = s.split('_').map((w) => w.toLowerCase())
+
+  return (
+    words[0] +
+    words
+      .slice(1)
+      .map((w) => w[0].toUpperCase() + w.slice(1))
+      .join('')
+  )
+}
+
+function camelToSnake(s: string) {
+  return s.replace(/([A-Z])/g, '_$1').toLowerCase()
+}
 
 function getKeyValue(line: string) {
   const lineData = line.trim().match(/^(\w+)="(.+)"$/)
@@ -64,7 +80,7 @@ function parser(content: string) {
   lines.slice(projectTag + 1, purchasesTag).forEach((line) => {
     const { key, value } = getKeyValue(line)
 
-    project[key] = removeQuotes(value)
+    project[snakeToCamel(key)] = removeQuotes(value)
   })
 
   requiredProjectKeys.forEach((key) => {
@@ -126,7 +142,7 @@ export const FinancyFileParser = {
   },
   toString: (data: Financy) => {
     const project = Object.entries(data.project)
-      .map(([key, value]) => `${key.toUpperCase()}="${value}"`)
+      .map(([key, value]) => `${camelToSnake(key).toUpperCase()}="${value}"`)
       .join('\n')
 
     const purchases = data.purchases

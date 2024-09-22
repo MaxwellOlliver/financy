@@ -2,12 +2,10 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 import {
   flexRender,
   getCoreRowModel,
-  PaginationState,
-  SortingState,
+  getSortedRowModel,
   TableOptions,
   useReactTable
 } from '@tanstack/react-table'
-import { useState } from 'react'
 import { Pagination } from '../Pagination'
 import { cn } from '@renderer/utils'
 
@@ -17,32 +15,15 @@ interface TableProps {
 }
 
 export function Table({ columns, data }: TableProps) {
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10
-  })
-  const [rowSelection, setRowSelection] = useState({})
-  const [sortBy, setSortBy] = useState<SortingState>([])
-
   const table = useReactTable({
     columns,
-    state: {
-      pagination,
-      sorting: sortBy,
-      rowSelection
-    },
     data: data ?? [],
     rowCount: data?.length ?? 0,
     getCoreRowModel: getCoreRowModel(),
-    manualSorting: true,
-    manualPagination: true,
+    getSortedRowModel: getSortedRowModel(),
     debugTable: true,
     enableRowSelection: true,
-    enableMultiSort: false,
-    onSortingChange: setSortBy,
-    onPaginationChange: setPagination,
-    // onGlobalFilterChange: setGlobalFilter,
-    onRowSelectionChange: setRowSelection
+    enableMultiSort: false
   })
 
   return (

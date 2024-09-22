@@ -1,7 +1,10 @@
-import { ipcMain } from 'electron'
+import { app, dialog, ipcMain } from 'electron'
 
 import { SetupFrame } from '@shared/types'
 import { IPC } from '@shared/constants'
+import path from 'path'
+import { readFileSync, writeFile } from 'fs'
+import { FinancyFileParser } from '@shared/lib'
 
 export function setupFrame({ window }: SetupFrame) {
   window.maximize()
@@ -30,5 +33,58 @@ export function setupFrame({ window }: SetupFrame) {
         window.maximize()
       }
     }
+  })
+
+  ipcMain.handle('save-file-dialog', async (_, data) => {
+    const result = await dialog.showSaveDialog({
+      title: 'Salvar arquivo',
+      defaultPath: path.join(app.getPath('documents'), `${data.fileName}.fy`),
+      buttonLabel: 'Salvar',
+      filters: [
+        { name: 'Financy', extensions: ['fy'] },
+        { name: 'Todos os arquivos', extensions: ['*'] }
+      ]
+    })
+
+    if (!result.canceled) {
+      return result.filePath
+    }
+
+    return null
+  })
+
+  ipcMain.on('save-file', (event, { filePath, data }) => {
+    writeFile(filePath, data, (err) => {
+      if (err) {
+        console.error('Error saving the file:', err)
+        event.sender.send('file-save-failed', err.message)
+      } else {
+        event.sender.send('file-save-success', 'File saved successfully!')
+      }
+    })
+  })
+
+  ipcMain.handle('open-file-dialog', async () => {
+    const result = await dialog.showOpenDialog({
+      title: 'Abrir arquivo',
+      buttonLabel: 'Abrir',
+      filters: [
+        { name: 'Financy', extensions: ['fy'] },
+        { name: 'Todos os arquivos', extensions: ['*'] }
+      ],
+      properties: ['openFile']
+    })
+
+    if (!result.canceled) {
+      return result.filePaths[0]
+    }
+
+    return null
+  })
+
+  ipcMain.handle('read-file', async (_, filePath) => {
+    const content = readFileSync(filePath, 'utf-8')
+
+    return content
   })
 }

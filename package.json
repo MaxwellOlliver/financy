@@ -33,6 +33,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.439.0",
     "react-hook-form": "^7.53.0",
+    "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.26.2",
     "react-select": "^5.8.0",
     "remask": "^1.2.2",

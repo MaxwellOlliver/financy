@@ -4,11 +4,22 @@ import { fileBuilderEventBus } from '@renderer/helpers/events'
 import { cn } from '@renderer/utils'
 import { debounce } from 'lodash'
 import { Filter, MoreHorizontal, Search } from 'lucide-react'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { FilterForm } from './FilterForm'
 
 export function FormHeader() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [appliedFilters, setAppliedFilters] = useState(0)
+
+  useEffect(() => {
+    const listener = (filter) => {
+      setAppliedFilters(Object.keys(filter).length)
+    }
+    fileBuilderEventBus.on('filter', listener)
+    return () => {
+      fileBuilderEventBus.off('filter', listener)
+    }
+  }, [])
 
   const togglePopover = () => {
     setIsPopoverOpen((s) => !s)
@@ -44,9 +55,11 @@ export function FormHeader() {
         >
           <Button color="secondary" className="py-3 px-3 overflow-visible">
             <Filter className="text-custombg size-4 relative" />
-            <div className="flex items-center justify-center text-sm text-secondary size-4 bg-primary rounded-full absolute -top-2 -right-2">
-              1
-            </div>
+            {appliedFilters > 0 && (
+              <div className="flex items-center justify-center text-sm text-secondary size-4 bg-primary rounded-full absolute -top-2 -right-2">
+                {appliedFilters}
+              </div>
+            )}
           </Button>
         </Popover>
         <Button size="sm" className="py-3 px-3 bg-custombg-600 hover:bg-custombg-500">

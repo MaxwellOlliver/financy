@@ -7,13 +7,22 @@ interface FileBuilderStore {
   files: Financy[]
   getFile: (id: string) => Financy | undefined
   initFile: (props: { projectName: string; id?: string }) => Financy
+  addFile: (file: Financy) => void
   getPurchases: (projectId: string) => PurchaseData[]
   addPurchase: (projectId: string, purchase: PurchaseData) => Purchase
   removePurchase: (projectId: string, purchaseId: string) => void
+  filePaths: { filePath: string; projectId: string }[]
+  registerPath: (props: { filePath: string; projectId: string }) => void
+  getFilePath: (projectId: string) => string | undefined
 }
 
 export const useFileBuilderStore = createStore<FileBuilderStore>((set, get) => ({
   files: [],
+  addFile: (file) => {
+    set((state) => ({
+      files: [...state.files, file]
+    }))
+  },
   getFile: (id) => get().files.find((file) => file.project.id === id),
   getPurchases: (projectId) => {
     const file = get().getFile(projectId)
@@ -57,5 +66,20 @@ export const useFileBuilderStore = createStore<FileBuilderStore>((set, get) => (
         return file
       })
     }))
+  },
+  filePaths: [],
+  registerPath: (props) => {
+    set((state) => {
+      const filtered = state.filePaths.filter((p) => p.projectId !== props.projectId)
+
+      return {
+        filePaths: [...filtered, props]
+      }
+    })
+  },
+  getFilePath: (projectId) => {
+    const path = get().filePaths.find((p) => p.projectId === projectId)
+
+    return path ? path.filePath : undefined
   }
 }))

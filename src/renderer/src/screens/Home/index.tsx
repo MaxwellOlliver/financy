@@ -1,7 +1,53 @@
 import { Import, PlusCircle } from 'lucide-react'
 import { Recent } from './Recent'
+import { useFileBuilderNavigationStore } from '@renderer/store/fileBuilderNavigationStore'
+import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
+import { useNavigate } from 'react-router-dom'
+import { FinancyFileParser } from '@shared/lib'
+import toast from 'react-hot-toast'
 
 export function Home() {
+  const addTab = useFileBuilderNavigationStore((s) => s.addTab)
+  const getTab = useFileBuilderNavigationStore((s) => s.getTab)
+  const addFile = useFileBuilderStore((s) => s.addFile)
+  const registerPath = useFileBuilderStore((s) => s.registerPath)
+
+  const navigate = useNavigate()
+
+  const handleOpenFile = async () => {
+    const path = await window.electron.ipcRenderer.invoke('open-file-dialog')
+
+    if (!path) {
+      toast.error('Nenhum arquivo selecionado')
+      return
+    }
+
+    const fileContent = await window.electron.ipcRenderer.invoke('read-file', path)
+
+    if (!fileContent) {
+      toast.error('Erro ao ler o arquivo')
+      return
+    }
+
+    try {
+      const fileData = await FinancyFileParser.toObject(fileContent)
+
+      const hasTab = getTab(fileData.project.id)
+
+      if (hasTab) {
+        navigate(`/builder/${encodeURIComponent(fileData.project.id)}`)
+        return
+      }
+
+      addFile(fileData)
+      addTab(fileData.project.id, fileData.project.name)
+      registerPath({ filePath: path, projectId: fileData.project.id })
+      navigate(`/builder/${encodeURIComponent(fileData.project.id)}`)
+    } catch (error) {
+      toast.error('Arquivo inválido')
+    }
+  }
+
   return (
     <div className="h-full w-full flex flex-col p-8">
       <h2 className="text-4xl max-w-2xl font-medium mb-4">
@@ -13,7 +59,10 @@ export function Home() {
           <PlusCircle className="size-5" />
           <span className="text-base font-medium">Criar um novo financy</span>
         </button>
-        <button className="text-custombg bg-secondary border rounded-md p-4 flex items-center gap-2 hover:bg-secondary-700 transition-colors duration-200">
+        <button
+          onClick={handleOpenFile}
+          className="text-custombg bg-secondary border rounded-md p-4 flex items-center gap-2 hover:bg-secondary-700 transition-colors duration-200"
+        >
           <Import className="size-5" />
           <span className="text-base font-medium">Usar um financy existente</span>
         </button>

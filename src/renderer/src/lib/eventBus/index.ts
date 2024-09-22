@@ -1,9 +1,9 @@
-type Listener = (data?: any) => void
+type Listener = (...args: any[]) => void
 
-export function createEventBus<TEventName extends string>() {
-  const listeners = new Map<string, Set<Listener>>()
+export function createEventBus<TEventMap extends Record<string, Listener>>() {
+  const listeners = new Map<keyof TEventMap, Set<TEventMap[keyof TEventMap]>>()
 
-  function on(event: TEventName, listener: Listener) {
+  function on<TKey extends keyof TEventMap>(event: TKey, listener: TEventMap[TKey]) {
     if (!listeners.has(event)) {
       listeners.set(event, new Set())
     }
@@ -11,20 +11,12 @@ export function createEventBus<TEventName extends string>() {
     listeners.get(event)?.add(listener)
   }
 
-  function off(event: TEventName, listener: Listener) {
-    if (!listeners.has(event)) {
-      return
-    }
-
+  function off<TKey extends keyof TEventMap>(event: TKey, listener: TEventMap[TKey]) {
     listeners.get(event)?.delete(listener)
   }
 
-  function emit(event: TEventName, data?: any) {
-    if (!listeners.has(event)) {
-      return
-    }
-
-    listeners.get(event)?.forEach((listener) => listener(data))
+  function emit<TKey extends keyof TEventMap>(event: TKey, ...args: Parameters<TEventMap[TKey]>) {
+    listeners.get(event)?.forEach((listener) => listener(...args))
   }
 
   return {
