@@ -14,8 +14,8 @@ export function Home() {
 
   const navigate = useNavigate()
 
-  const handleOpenFile = async () => {
-    const path = await window.electron.ipcRenderer.invoke('open-file-dialog')
+  const handleOpenFile = async (pathname?: string) => {
+    const path = pathname ?? (await window.electron.ipcRenderer.invoke('open-file-dialog'))
 
     if (!path) {
       toast.error('Nenhum arquivo selecionado')
@@ -60,14 +60,14 @@ export function Home() {
           <span className="text-base font-medium">Criar um novo financy</span>
         </button>
         <button
-          onClick={handleOpenFile}
+          onClick={() => handleOpenFile()}
           className="text-custombg bg-secondary border rounded-md p-4 flex items-center gap-2 hover:bg-secondary-700 transition-colors duration-200"
         >
           <Import className="size-5" />
           <span className="text-base font-medium">Usar um financy existente</span>
         </button>
       </div>
-      <Recent />
+      <Recent onOpenFile={handleOpenFile} />
     </div>
   )
 }

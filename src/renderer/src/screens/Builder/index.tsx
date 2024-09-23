@@ -9,6 +9,7 @@ import { KeyBind } from '@renderer/hooks/useKeyBind/type'
 import { FinancyFileParser } from '@shared/lib'
 import { debounce } from 'lodash'
 import toast from 'react-hot-toast'
+import { HANDLER } from '@shared/constants/handlers'
 
 export function Builder() {
   const id = useParams<{ id: string }>().id
@@ -39,7 +40,12 @@ export function Builder() {
       const data = FinancyFileParser.toString(currentFile)
 
       window.electron.ipcRenderer.send('save-file', { filePath, data })
-
+      await window.electron.ipcRenderer.invoke(HANDLER.STORE.RECENT_FILES.REGISTER, {
+        id: currentFile.project.id,
+        path: filePath,
+        name: currentFile.project.name,
+        updatedAt: Date.now()
+      })
       toast.success('Salvo!')
     }, 300),
     [id, getFile, window.Electron, getFilePath, registerPath]

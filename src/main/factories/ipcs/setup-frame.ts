@@ -4,7 +4,6 @@ import { SetupFrame } from '@shared/types'
 import { IPC } from '@shared/constants'
 import path from 'path'
 import { readFileSync, writeFile } from 'fs'
-import { FinancyFileParser } from '@shared/lib'
 
 export function setupFrame({ window }: SetupFrame) {
   window.maximize()
