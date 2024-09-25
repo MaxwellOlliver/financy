@@ -65,8 +65,6 @@ export function ItemsTable() {
     const searchItemsListener = ({ search }) => {
       if (!id) return
 
-      console.log(search)
-
       if (search === '') {
         setPurchases(getPurchases(id))
       } else {
