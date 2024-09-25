@@ -95,7 +95,7 @@ export function Frame() {
           </ActionButton>
         </div>
       </div>
-      <div className="w-full h-full max-h-[calc(100vh-3rem)] overflow-auto">
+      <div className="w-full h-full max-h-[calc(100vh-3rem)] overflow-auto relative">
         <Outlet />
       </div>
     </div>

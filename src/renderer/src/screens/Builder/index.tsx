@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Body } from './Body'
 import { Header } from './Header'
 import { useCallback, useEffect, useMemo } from 'react'
@@ -18,6 +18,7 @@ export function Builder() {
   const registerPath = useFileBuilderStore((s) => s.registerPath)
   const getFilePath = useFileBuilderStore((s) => s.getFilePath)
   const getTab = useFileBuilderNavigationStore((s) => s.getTab)
+  const navigate = useNavigate()
 
   const handleSaveFile = useCallback(
     debounce(async () => {
@@ -73,7 +74,10 @@ export function Builder() {
 
       const currentTab = getTab(id)
 
-      if (!currentTab) return
+      if (!currentTab) {
+        navigate('/')
+        return
+      }
 
       initFile({ projectName: currentTab.name, id })
     }

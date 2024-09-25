@@ -7,6 +7,7 @@ import { Option } from '@renderer/types/select'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { Modal } from '@renderer/components/Modal'
 
 type FormData = {
   minValue: number
@@ -15,7 +16,8 @@ type FormData = {
 }
 
 interface FilterFormProps {
-  onToggle: () => void
+  isOpen: boolean
+  onClose: () => void
 }
 
 const schema = yup.object().shape({
@@ -27,8 +29,15 @@ const schema = yup.object().shape({
   maxValue: yup.number(),
   category: yup.object().nullable()
 }) as yup.ObjectSchema<FormData>
+export function FilterFormModal(props: FilterFormProps) {
+  return (
+    <Modal {...props} title="Filtros">
+      <Component {...props} />
+    </Modal>
+  )
+}
 
-export function FilterForm({ onToggle }: FilterFormProps) {
+function Component({ onClose }: FilterFormProps) {
   const {
     control,
     handleSubmit,
@@ -39,6 +48,8 @@ export function FilterForm({ onToggle }: FilterFormProps) {
     reValidateMode: 'onChange',
     resolver: yupResolver(schema)
   })
+
+  const isDirty = Object.keys(dirtyFields).length > 0
 
   const handleApplyFilter = ({ category, maxValue, minValue }: FormData) => {
     const filter = {
@@ -55,7 +66,7 @@ export function FilterForm({ onToggle }: FilterFormProps) {
     }, {})
 
     fileBuilderEventBus.emit('filter', dirtyFilter)
-    onToggle()
+    onClose()
   }
 
   const handleResetFilters = () => {
@@ -65,7 +76,7 @@ export function FilterForm({ onToggle }: FilterFormProps) {
       minValue: 0
     })
     fileBuilderEventBus.emit('filter', {})
-    onToggle()
+    onClose()
   }
 
   const categoryOptions = categories.map((category) => ({
@@ -76,7 +87,7 @@ export function FilterForm({ onToggle }: FilterFormProps) {
   return (
     <form
       onSubmit={handleSubmit(handleApplyFilter)}
-      className="bg-custombg-600 w-72 flex flex-col gap-2 p-2 rounded-md items-center"
+      className="bg-custombg-600 flex flex-col gap-2 rounded-md items-center"
     >
       <CurrencyInput
         control={control}
@@ -99,12 +110,14 @@ export function FilterForm({ onToggle }: FilterFormProps) {
         error={errors.category?.message}
         isClearable
       />
-      <Button type="submit" color="secondary" className="w-full mt-4">
-        Aplicar
-      </Button>
-      <Button type="button" variant="outline" className="w-full" onClick={handleResetFilters}>
-        Limpar
-      </Button>
+      <div className="flex gap-4 mt-8 w-full">
+        <Button type="submit" color="secondary" disabled={!isDirty}>
+          Aplicar
+        </Button>
+        <Button type="button" variant="outline" onClick={handleResetFilters}>
+          Limpar
+        </Button>
+      </div>
     </form>
   )
 }

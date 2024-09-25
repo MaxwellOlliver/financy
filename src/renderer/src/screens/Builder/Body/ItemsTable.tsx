@@ -65,14 +65,18 @@ export function ItemsTable() {
     const searchItemsListener = ({ search }) => {
       if (!id) return
 
+      console.log(search)
+
       if (search === '') {
         setPurchases(getPurchases(id))
       } else {
-        setPurchases((prev) =>
-          prev.filter((purchase) =>
-            purchase.purchaseName.toLowerCase().includes(search.toLowerCase())
-          )
+        const newValue = purchases.filter(
+          (purchase) =>
+            purchase.purchaseName.toLowerCase().includes(search.toLowerCase()) ||
+            purchase.category.toLowerCase().includes(search.toLowerCase()) ||
+            purchase.value.toString().includes(search.toLowerCase())
         )
+        setPurchases(newValue)
       }
     }
 
