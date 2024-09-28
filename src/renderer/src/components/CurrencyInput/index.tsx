@@ -21,11 +21,13 @@ const CurrencyInputComponent = forwardRef<HTMLInputElement, CurrencyInputProps>(
       disabled: !!props.disabled
     })
 
-    const [amount, setAmount] = useState(formatCurrency('0', currency ?? 'BRL'))
+    const [amount, setAmount] = useState('')
 
     useEffect(() => {
       if (props.value !== undefined)
-        setAmount(formatCurrency(String(props.value ?? ''), currency ?? 'BRL'))
+        setAmount(
+          props.value === null ? '' : formatCurrency(String(props.value ?? ''), currency ?? 'BRL')
+        )
     }, [props.value])
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +67,7 @@ const CurrencyInputComponent = forwardRef<HTMLInputElement, CurrencyInputProps>(
             value={amount}
             onChange={handleChange}
             className={inputStyles}
+            placeholder="0,00"
             ref={ref}
           />
         </div>

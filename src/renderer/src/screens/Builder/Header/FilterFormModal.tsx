@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Modal } from '@renderer/components/Modal'
+import { Filter, X } from 'lucide-react'
 
 type FormData = {
   minValue: number
@@ -31,7 +32,7 @@ const schema = yup.object().shape({
 }) as yup.ObjectSchema<FormData>
 export function FilterFormModal(props: FilterFormProps) {
   return (
-    <Modal {...props} title="Filtros">
+    <Modal {...props} title="Filtros" icon={Filter}>
       <Component {...props} />
     </Modal>
   )
@@ -111,10 +112,10 @@ function Component({ onClose }: FilterFormProps) {
         isClearable
       />
       <div className="flex gap-4 mt-8 w-full">
-        <Button type="submit" color="secondary" disabled={!isDirty}>
+        <Button type="submit" size="sm" color="secondary" disabled={!isDirty} iconLeft={Filter}>
           Aplicar
         </Button>
-        <Button type="button" variant="outline" onClick={handleResetFilters}>
+        <Button type="button" size="sm" variant="outline" onClick={handleResetFilters} iconLeft={X}>
           Limpar
         </Button>
       </div>

@@ -71,7 +71,7 @@ export const Dropdown = ({
           onMouseEnter={() => triggerOn === 'hover' && handleMouseInContainer()}
           onMouseLeave={() => triggerOn === 'hover' && handleMouseIsOutContainer()}
         >
-          <ul className="flex flex-col w-full">
+          <ul className="flex flex-col w-full bg-custombg-600 rounded-md overflow-hidden">
             {items.map((item, index) => (
               <li className="w-full border-b border-gray-200 last:border-none" key={index}>
                 <button
@@ -81,10 +81,11 @@ export const Dropdown = ({
                     'flex',
                     'items-center',
                     'gap-2',
-                    'hover:bg-gray-100',
+                    'hover:bg-custombg-500',
                     'w-full',
-                    'disabled:bg-gray-100',
-                    'disabled:opacity-50'
+                    'disabled:bg-custombg-500',
+                    'disabled:opacity-50',
+                    'transition-colors duration-200'
                   )}
                   onClick={(e) => clickInternal(e, item)}
                   disabled={disabled ?? item.disabled}

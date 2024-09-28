@@ -50,7 +50,10 @@ function ChartsComponent() {
   return (
     <div className="flex flex-col gap-4">
       <div className="w-full bg-custombg-600 rounded-md p-4 flex justify-between items-center">
-        <h2 className="text-primary">Total registrado</h2>
+        <div className="flex flex-col">
+          <h2 className="text-primary">Total registrado</h2>
+          <span className="text-custombg-300 text-sm">{purchases.length} registrados</span>
+        </div>
         <span className="text-lg">{formatCurrency(totalRegistered, 'BRL', true)}</span>
       </div>
       <div className="w-full bg-custombg-600 rounded-md p-4">

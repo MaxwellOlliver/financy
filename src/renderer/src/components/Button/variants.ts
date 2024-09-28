@@ -26,7 +26,7 @@ export const buttonVariants = tv({
     size: {
       sm: {
         icon: 'size-3',
-        base: 'px-3 py-2 text-xs'
+        base: 'px-3 py-2 text-sm'
       },
       md: {
         icon: 'size-4',
@@ -49,6 +49,14 @@ export const buttonVariants = tv({
           'focus:ring-gray-300'
         ]
       }
+    },
+    color: {
+      primary: '',
+      secondary: '',
+      success: '',
+      warning: '',
+      error: '',
+      info: ''
     }
   },
   compoundVariants: [

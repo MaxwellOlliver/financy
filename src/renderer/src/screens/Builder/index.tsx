@@ -10,6 +10,7 @@ import { FinancyFileParser } from '@shared/lib'
 import { debounce } from 'lodash'
 import toast from 'react-hot-toast'
 import { HANDLER } from '@shared/constants/handlers'
+import { fileBuilderEventBus } from '@renderer/helpers/events'
 
 export function Builder() {
   const id = useParams<{ id: string }>().id
@@ -82,6 +83,20 @@ export function Builder() {
       initFile({ projectName: currentTab.name, id })
     }
   }, [id, initFile, getTab])
+
+  useEffect(() => {
+    return () => {
+      handleSaveFile.flush()
+    }
+  }, [handleSaveFile])
+
+  useEffect(() => {
+    fileBuilderEventBus.on('save-file', handleSaveFile)
+
+    return () => {
+      fileBuilderEventBus.off('save-file', handleSaveFile)
+    }
+  }, [handleSaveFile])
 
   return (
     <div className="flex justify-center w-full h-full py-12 px-8">

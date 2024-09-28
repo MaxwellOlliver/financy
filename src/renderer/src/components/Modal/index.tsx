@@ -1,6 +1,6 @@
 import { Portal } from '../_internal/Portal'
 import { tv } from 'tailwind-variants'
-import { X } from 'lucide-react'
+import { LucideIcon, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { cn } from '@renderer/utils'
 
@@ -11,6 +11,7 @@ interface ModalProps {
   title?: string
   size?: 'sm' | 'md' | 'lg' | 'xl'
   subTitle?: string
+  icon?: LucideIcon
   /**
    * @description If true, the modal children will be unmounted when it's closed
    * @default true
@@ -44,7 +45,8 @@ export const Modal = ({
   size,
   subTitle,
   title,
-  unmountOnClose = true
+  unmountOnClose = true,
+  icon: Icon
 }: ModalProps) => {
   const [shouldRender, setShouldRender] = useState(false)
 
@@ -94,7 +96,12 @@ export const Modal = ({
           >
             <header className="flex justify-between mb-4 relative">
               <div>
-                {title && <h3 className="text-lg font-semibold">{title}</h3>}
+                {title && (
+                  <h3 className="text-lg font-semibold flex items-center">
+                    {Icon && <Icon className="size-4 mr-2" />}
+                    {title}
+                  </h3>
+                )}
                 {subTitle && <p className="text-sm text-fontColor/70">{subTitle}</p>}
               </div>
               <button

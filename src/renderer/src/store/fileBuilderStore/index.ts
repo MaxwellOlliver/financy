@@ -14,6 +14,8 @@ interface FileBuilderStore {
   filePaths: { filePath: string; projectId: string }[]
   registerPath: (props: { filePath: string; projectId: string }) => void
   getFilePath: (projectId: string) => string | undefined
+  updateProjectName: (projectId: string, name: string) => void
+  removeFile: (projectId: string) => void
 }
 
 export const useFileBuilderStore = createStore<FileBuilderStore>((set, get) => ({
@@ -81,5 +83,28 @@ export const useFileBuilderStore = createStore<FileBuilderStore>((set, get) => (
     const path = get().filePaths.find((p) => p.projectId === projectId)
 
     return path ? path.filePath : undefined
+  },
+  updateProjectName: (projectId, name) => {
+    set((state) => ({
+      files: state.files.map((file) => {
+        if (file.project.id === projectId) {
+          return {
+            ...file,
+            project: {
+              ...file.project,
+              name
+            }
+          }
+        }
+        return file
+      })
+    }))
+  },
+  removeFile: (projectId) => {
+    const newArray = get().files.filter((file) => file.project.id !== projectId)
+
+    set(() => ({
+      files: newArray
+    }))
   }
 }))

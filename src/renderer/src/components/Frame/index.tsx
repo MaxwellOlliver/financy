@@ -8,14 +8,19 @@ import { cn } from '@renderer/utils'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useFileBuilderNavigationStore } from '@renderer/store/fileBuilderNavigationStore'
 import { v4 } from 'uuid'
+import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
 
 export function Frame() {
   const [isMaximized, setIsMaximized] = useState(true)
   const openedFiles = useFileBuilderNavigationStore((s) => s.tabs)
   const addTab = useFileBuilderNavigationStore((s) => s.addTab)
+  const closeTab = useFileBuilderNavigationStore((s) => s.closeTab)
+  const removeFile = useFileBuilderStore((s) => s.removeFile)
 
   const location = useLocation()
   const navigate = useNavigate()
+
+  console.log(location.pathname)
 
   useEffect(() => {
     window.electron.ipcRenderer.on(IPC.FRAME.WINDOW_UNMAXIMIZE, (_, isMaximized) => {
@@ -51,6 +56,12 @@ export function Frame() {
     handleNavigate(id)
   }
 
+  const handleTabClose = (id: string) => {
+    closeTab(id)
+    removeFile(id)
+    navigate('/')
+  }
+
   return (
     <div className="w-screen h-screen grid grid-rows-[3rem_1fr] bg-custombg ">
       <div className="frame h-12 w-full bg-custombg flex justify-between">
@@ -68,7 +79,10 @@ export function Frame() {
                 >
                   <FileSpreadsheet className="size-4" />
                   <span className="text-xs">{tab.name}</span>
-                  <X className="opacity-0 ml-2 group-hover:opacity-100 size-3" />
+                  <X
+                    className="opacity-0 ml-2 group-hover:opacity-100 size-3"
+                    onClick={() => handleTabClose(tab.id)}
+                  />
                 </NavigationButton>
 
                 <div className={cn('divider  h-[30%] w-[1px] bg-secondary opacity-50')}></div>

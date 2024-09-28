@@ -5,6 +5,7 @@ type FileBuilderEventMap = {
   'remove-purchase': (projectId: string, purchaseId: string) => void
   search: (props: { search: string }) => void
   filter: (filter: { category?: string | undefined; maxValue?: number; minValue?: number }) => void
+  'save-file': (props: { id: string }) => void
 }
 
 export const fileBuilderEventBus = createEventBus<FileBuilderEventMap>()
