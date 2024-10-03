@@ -1,8 +1,8 @@
 import { useContext, useMemo } from 'react'
 import { RouterContext } from '../context'
-import { Route } from '../types'
+import { RouteType } from '../types'
 
-export const useRoute = <T extends Route['params']>() => {
+export const useRoute = <T extends RouteType['params']>() => {
   const ctx = useContext(RouterContext)
 
   if (!ctx) {

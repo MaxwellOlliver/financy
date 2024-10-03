@@ -1,17 +1,27 @@
-export type Route = {
+export type RouteType = {
   path: string
   params?: Record<string, string | number | boolean>
 }
 
-export type RouterHistory = Route[]
+export type NavigateFn = {
+  (route: string, params?: Record<string, string | number | boolean>): void
+  (route: RouteType): void
+}
+
+export type RouterHistory = RouteType[]
 
 export interface RouterContextType {
   history: RouterHistory
-  navigate: (route: Route) => void
+  navigate: NavigateFn
   goBack: () => void
 }
 
 export interface RouterProviderProps {
   children: React.ReactNode
-  defaultRoute?: Route | string
+  defaultRoute?: RouteType | string
+}
+
+export interface RouteComponentProps {
+  path: string
+  children: React.ReactNode
 }

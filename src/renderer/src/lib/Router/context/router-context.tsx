@@ -1,5 +1,5 @@
 import { createContext, useCallback, useState } from 'react'
-import { Route, RouterContextType, RouterHistory, RouterProviderProps } from '../types'
+import { RouteType, RouterContextType, RouterHistory, RouterProviderProps } from '../types'
 
 export const RouterContext = createContext<RouterContextType>({
   history: [],
@@ -7,7 +7,7 @@ export const RouterContext = createContext<RouterContextType>({
   goBack: () => {}
 })
 
-export const RouterProvider = ({ children, defaultRoute }: RouterProviderProps) => {
+const RouterProvider = ({ children, defaultRoute }: RouterProviderProps) => {
   const [history, setHistory] = useState<RouterHistory>(() => {
     if (defaultRoute) {
       if (typeof defaultRoute === 'string') {
@@ -20,16 +20,19 @@ export const RouterProvider = ({ children, defaultRoute }: RouterProviderProps) 
     return [{ path: '/' }]
   })
 
-  const navigate = useCallback((route: Route | string) => {
-    if (typeof route === 'string') {
-      setHistory((s) => [...s, { path: route }])
-    } else {
-      setHistory((s) => [...s, route])
-    }
-  }, [])
+  const navigate = useCallback(
+    (route: RouteType | string, params?: Record<string, string | boolean | number>) => {
+      if (typeof route === 'string') {
+        setHistory((s) => [...s, { path: route, params }])
+      } else {
+        setHistory((s) => [...s, route])
+      }
+    },
+    []
+  )
 
   const goBack = useCallback(() => {
-    setHistory((s) => s.slice(0, -1))
+    setHistory((s) => (s.length > 1 ? s.slice(0, -1) : s))
   }, [])
 
   return (
@@ -38,3 +41,5 @@ export const RouterProvider = ({ children, defaultRoute }: RouterProviderProps) 
     </RouterContext.Provider>
   )
 }
+
+export { RouterProvider as Router }

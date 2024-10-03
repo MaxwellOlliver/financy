@@ -2,9 +2,9 @@ import { Import, PlusCircle } from 'lucide-react'
 import { Recent } from './Recent'
 import { useFileBuilderNavigationStore } from '@renderer/store/fileBuilderNavigationStore'
 import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
-import { useNavigate } from 'react-router-dom'
 import { FinancyFileParser } from '@shared/lib'
 import toast from 'react-hot-toast'
+import { useNavigate } from '@renderer/lib/Router'
 
 export function Home() {
   const addTab = useFileBuilderNavigationStore((s) => s.addTab)
@@ -12,7 +12,7 @@ export function Home() {
   const addFile = useFileBuilderStore((s) => s.addFile)
   const registerPath = useFileBuilderStore((s) => s.registerPath)
 
-  const navigate = useNavigate()
+  const { navigate } = useNavigate()
 
   const handleOpenFile = async (pathname?: string) => {
     const path = pathname ?? (await window.electron.ipcRenderer.invoke('open-file-dialog'))
@@ -35,14 +35,18 @@ export function Home() {
       const hasTab = getTab(fileData.project.id)
 
       if (hasTab) {
-        navigate(`/builder/${encodeURIComponent(fileData.project.id)}`)
+        navigate('/builder', {
+          id: fileData.project.id
+        })
         return
       }
 
       addFile(fileData)
       addTab(fileData.project.id, fileData.project.name)
       registerPath({ filePath: path, projectId: fileData.project.id })
-      navigate(`/builder/${encodeURIComponent(fileData.project.id)}`)
+      navigate('/builder', {
+        id: fileData.project.id
+      })
     } catch (error) {
       toast.error('Arquivo inválido')
     }
