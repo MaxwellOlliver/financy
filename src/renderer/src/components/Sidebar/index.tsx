@@ -1,16 +1,16 @@
 import { sidebarItems } from '@renderer/layout/config/sidebar'
 import { LogoText } from '../LogoText'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { useMemo } from 'react'
 import { cn } from '@renderer/utils'
+import { useNavigate, useRoute } from '@renderer/lib/Router'
 
 export function Sidebar() {
-  const location = useLocation()
-  const navigate = useNavigate()
+  const route = useRoute()
+  const { navigate } = useNavigate()
 
   const activeSidebarItem = useMemo(() => {
-    return sidebarItems.find((item) => item.path === location.pathname)
-  }, [location.pathname])
+    return sidebarItems.find((item) => item.path === route.pathname)
+  }, [route.pathname])
 
   const handleNavigate = (path: string) => {
     navigate(path)

@@ -10,6 +10,10 @@ export const useNavigate = () => {
 
   return {
     navigate: ctx.navigate,
+    registerRoute: ctx.registerRoute,
+    registerAndNavigate: ctx.registerAndNavigate,
+    unregisterRoute: ctx.unregisterRoute,
+    unregisterAndNavigate: ctx.unregisterAndNavigate,
     goBack: ctx.goBack
   }
 }

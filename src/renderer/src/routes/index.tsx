@@ -1,15 +1,19 @@
+import { Frame } from '@renderer/components/Frame'
+import { Dashboard } from '@renderer/layout/components/Dashboard'
 import { Router, Route } from '@renderer/lib/Router'
-import { Builder, Home } from '@renderer/screens'
+import { Builder } from '@renderer/screens'
 
 export const Routes = () => {
   return (
     <Router>
-      <Route path="/">
-        <Home />
-      </Route>
-      <Route path="/builder">
-        <Builder />
-      </Route>
+      <Frame>
+        <Route path="/">
+          <Dashboard />
+        </Route>
+        <Route path="/builder">
+          <Builder />
+        </Route>
+      </Frame>
     </Router>
   )
 }

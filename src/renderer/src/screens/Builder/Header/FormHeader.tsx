@@ -7,15 +7,19 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { FilterFormModal } from './FilterFormModal'
 import { Dropdown } from '@renderer/components/Dropdown'
 import { UpdateProjectNameModal } from './UpdateProjectNameModal'
+import { useRoute } from '@renderer/lib/Router'
 
 export function FormHeader() {
+  const id = useRoute<{ id: string }>().params.id
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [isUpdateProjectNameModalOpen, setIsUpdateProjectNameModalOpen] = useState(false)
   const [appliedFilters, setAppliedFilters] = useState(0)
 
   useEffect(() => {
-    const listener = (filter) => {
-      setAppliedFilters(Object.keys(filter).length)
+    const listener = (projectId, filter) => {
+      if (projectId === id) {
+        setAppliedFilters(Object.keys(filter).length)
+      }
     }
     fileBuilderEventBus.on('filter', listener)
     return () => {
@@ -28,7 +32,7 @@ export function FormHeader() {
   }
 
   const handleSearch = (e: ChangeEvent) => {
-    fileBuilderEventBus.emit('search', { search: (e.target as HTMLInputElement).value })
+    fileBuilderEventBus.emit('search', id, { search: (e.target as HTMLInputElement).value })
   }
 
   const debouncedHandleSearch = useCallback(debounce(handleSearch, 400), [])

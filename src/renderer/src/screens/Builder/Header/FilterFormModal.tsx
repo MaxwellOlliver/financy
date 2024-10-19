@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Modal } from '@renderer/components/Modal'
 import { Filter, X } from 'lucide-react'
+import { useRoute } from '@renderer/lib/Router'
 
 type FormData = {
   minValue: number
@@ -39,6 +40,7 @@ export function FilterFormModal(props: FilterFormProps) {
 }
 
 function Component({ onClose }: FilterFormProps) {
+  const id = useRoute<{ id: string }>().params.id
   const {
     control,
     handleSubmit,
@@ -66,7 +68,7 @@ function Component({ onClose }: FilterFormProps) {
       return acc
     }, {})
 
-    fileBuilderEventBus.emit('filter', dirtyFilter)
+    fileBuilderEventBus.emit('filter', id, dirtyFilter)
     onClose()
   }
 
@@ -76,7 +78,7 @@ function Component({ onClose }: FilterFormProps) {
       maxValue: 0,
       minValue: 0
     })
-    fileBuilderEventBus.emit('filter', {})
+    fileBuilderEventBus.emit('filter', id, {})
     onClose()
   }
 

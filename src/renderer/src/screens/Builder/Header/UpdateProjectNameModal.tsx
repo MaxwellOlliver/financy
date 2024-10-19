@@ -6,9 +6,9 @@ import { Modal } from '@renderer/components/Modal'
 import { Pen, Save, X } from 'lucide-react'
 import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
 import { useFileBuilderNavigationStore } from '@renderer/store/fileBuilderNavigationStore'
-import { useParams } from 'react-router-dom'
 import { Input } from '@renderer/components/Input'
 import { fileBuilderEventBus } from '@renderer/helpers/events'
+import { useRoute } from '@renderer/lib/Router'
 
 type FormData = {
   name: string
@@ -32,7 +32,7 @@ export function UpdateProjectNameModal(props: UpdateProjectNameModalProps) {
 }
 
 function Component({ onClose }: UpdateProjectNameModalProps) {
-  const id = useParams<{ id: string }>().id
+  const id = useRoute<{ id: string }>().params.id
   const updateProjectName = useFileBuilderStore((state) => state.updateProjectName)
   const getFile = useFileBuilderStore((state) => state.getFile)
   const updateTabName = useFileBuilderNavigationStore((state) => state.updateTabName)

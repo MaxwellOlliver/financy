@@ -12,7 +12,7 @@ export function Home() {
   const addFile = useFileBuilderStore((s) => s.addFile)
   const registerPath = useFileBuilderStore((s) => s.registerPath)
 
-  const { navigate } = useNavigate()
+  const { registerAndNavigate } = useNavigate()
 
   const handleOpenFile = async (pathname?: string) => {
     const path = pathname ?? (await window.electron.ipcRenderer.invoke('open-file-dialog'))
@@ -35,8 +35,9 @@ export function Home() {
       const hasTab = getTab(fileData.project.id)
 
       if (hasTab) {
-        navigate('/builder', {
-          id: fileData.project.id
+        registerAndNavigate({
+          path: '/builder',
+          params: { id: fileData.project.id }
         })
         return
       }
@@ -44,8 +45,9 @@ export function Home() {
       addFile(fileData)
       addTab(fileData.project.id, fileData.project.name)
       registerPath({ filePath: path, projectId: fileData.project.id })
-      navigate('/builder', {
-        id: fileData.project.id
+      registerAndNavigate({
+        path: '/builder',
+        params: { id: fileData.project.id }
       })
     } catch (error) {
       toast.error('Arquivo inválido')

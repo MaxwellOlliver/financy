@@ -9,8 +9,8 @@ import { Option } from '@renderer/types/select'
 import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useParams } from 'react-router-dom'
 import * as yup from 'yup'
+import { useRoute } from '@renderer/lib/Router'
 
 type FinancyItemData = {
   purchaseName: string
@@ -25,7 +25,7 @@ const schema = yup.object().shape({
 }) as yup.ObjectSchema<FinancyItemData>
 
 export function Form() {
-  const projectId = useParams<{ id: string }>().id
+  const projectId = useRoute<{ id: string }>().params.id
   const {
     control,
     handleSubmit,
@@ -37,7 +37,7 @@ export function Form() {
     defaultValues: {
       purchaseName: '',
       category: null,
-      value: 0
+      value: undefined
     },
     resolver: yupResolver(schema)
   })
@@ -47,13 +47,17 @@ export function Form() {
   const handleAddPurchase = ({ category, purchaseName, value }: FinancyItemData) => {
     if (!projectId) return
 
-    const purchase = addPurchase(projectId, {
-      purchaseName,
-      value,
-      category: category!.value
+    addPurchase(projectId, {
+      category: category?.value ?? '',
+      purchaseName: purchaseName,
+      value: value
     })
-    fileBuilderEventBus.emit('add-purchase', { projectId, purchase })
-    reset()
+    fileBuilderEventBus.emit('add-purchase', projectId)
+    reset({
+      purchaseName: '',
+      category: null,
+      value: undefined
+    })
   }
 
   const categoryOptions = categories.map((category) => ({

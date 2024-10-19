@@ -1,14 +1,14 @@
-import { memo, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
 import { formatCurrency } from '@renderer/utils'
 import { categories } from '@renderer/constants/category'
 import { PurchaseData } from '@renderer/types/financy'
 import { fileBuilderEventBus } from '@renderer/helpers/events'
 import { Crown } from 'lucide-react'
+import { useRoute } from '@renderer/lib/Router'
 
 function ChartsComponent() {
-  const id = useParams<{ id: string }>().id
+  const id = useRoute<{ id: string }>().params.id
   const getFile = useFileBuilderStore((state) => state.getFile)
 
   const [purchases, setPurchases] = useState<PurchaseData[]>(() =>
@@ -47,6 +47,35 @@ function ChartsComponent() {
     {} as Record<string, number>
   )
 
+  const topCategories = useMemo(
+    () =>
+      Object.entries(totalByCategory)
+        .slice(0, 5)
+        .sort((a, b) => b[1] - a[1])
+        .map(([category, total], index) => {
+          const categoryData = categories.find((c) => c.value === category)
+
+          if (!categoryData) return null
+
+          return (
+            <li className="flex justify-between" key={category}>
+              <div className="flex items-center gap-2">
+                <categoryData.icon
+                  className="size-4"
+                  style={{
+                    color: categoryData.color
+                  }}
+                />
+                <span className="text-sm">{categoryData.name}</span>
+                {index === 0 && <Crown className="size-3 text-yellow-600" />}
+              </div>
+              <span className="text-sm">{formatCurrency(total, 'BRL')} R$</span>
+            </li>
+          )
+        }),
+    [totalByCategory]
+  )
+
   return (
     <div className="flex flex-col gap-4">
       <div className="w-full bg-custombg-600 rounded-md p-4 flex justify-between items-center">
@@ -61,32 +90,7 @@ function ChartsComponent() {
           <h2 className="text-primary">Total por categoria</h2>
           <span className="text-custombg-300 text-sm">Top 5</span>
         </div>
-        <ul className="flex flex-col gap-4">
-          {Object.entries(totalByCategory)
-            .slice(0, 5)
-            .sort((a, b) => b[1] - a[1])
-            .map(([category, total], index) => {
-              const categoryData = categories.find((c) => c.value === category)
-
-              if (!categoryData) return null
-
-              return (
-                <li className="flex justify-between" key={category}>
-                  <div className="flex items-center gap-2">
-                    <categoryData.icon
-                      className="size-4"
-                      style={{
-                        color: categoryData.color
-                      }}
-                    />
-                    <span className="text-sm">{categoryData.name}</span>
-                    {index === 0 && <Crown className="size-3 text-yellow-600" />}
-                  </div>
-                  <span className="text-sm">{formatCurrency(total, 'BRL')} R$</span>
-                </li>
-              )
-            })}
-        </ul>
+        <ul className="flex flex-col gap-4">{topCategories}</ul>
       </div>
     </div>
   )

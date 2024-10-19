@@ -1,6 +1,6 @@
 import { Navbar } from '@renderer/components/Navbar'
 import { Sidebar } from '@renderer/components/Sidebar'
-import { Outlet } from 'react-router-dom'
+import { Home } from '@renderer/screens'
 
 export function Dashboard() {
   return (
@@ -9,7 +9,7 @@ export function Dashboard() {
       <div className="h-full w-full">
         <div className="grid grid-rows-[40px_1fr]">
           <Navbar />
-          <Outlet />
+          <Home />
         </div>
       </div>
     </div>

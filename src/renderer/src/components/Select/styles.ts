@@ -29,8 +29,7 @@ export const selectClassNames: (props: {
   multiValueRemove: () => 'cursor-pointer ml-1',
   valueContainer: () => 'gap-1',
   loadingIndicator: () => 'text-primary',
-  menuList: () =>
-    'scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-gray-200 bg-transparent border-none',
+  menuList: () => 'bg-transparent border-none',
   loadingMessage: () => 'py-2'
 })
 
@@ -43,6 +42,7 @@ export const selectStyles: Props['styles'] = {
   }),
   menuList: (base) => ({
     ...base,
-    scrollbarWidth: 'thin'
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#eb622d transparent'
   })
 }

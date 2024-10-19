@@ -24,10 +24,13 @@ const CurrencyInputComponent = forwardRef<HTMLInputElement, CurrencyInputProps>(
     const [amount, setAmount] = useState('')
 
     useEffect(() => {
-      if (props.value !== undefined)
+      if (props.value !== undefined) {
         setAmount(
           props.value === null ? '' : formatCurrency(String(props.value ?? ''), currency ?? 'BRL')
         )
+      } else {
+        setAmount('')
+      }
     }, [props.value])
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

@@ -20,8 +20,6 @@ export function Recent({ onOpenFile }: RecentProps) {
   const handleLoadRecentFiles = async () => {
     const recentFiles = await window.electron.ipcRenderer.invoke(HANDLER.STORE.RECENT_FILES.GET)
 
-    console.log('recentFiles', recentFiles)
-
     setRecentOpened(recentFiles)
   }
 

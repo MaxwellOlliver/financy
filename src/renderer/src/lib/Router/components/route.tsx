@@ -1,8 +1,25 @@
+import { useContext } from 'react'
+import { RouterContext } from '../context'
 import { useRoute } from '../hooks'
 import { RouteComponentProps } from '../types'
+import { RouteInstanceProvider } from '../context'
+import { isEqual } from 'lodash'
 
 export const Route = ({ children, path }: RouteComponentProps) => {
-  const { pathname } = useRoute()
+  const { currentRoute } = useRoute()
+  const ctx = useContext(RouterContext)
 
-  return <div className={pathname === path ? 'contents' : 'hidden'}>{children}</div>
+  const instances = ctx.routes.filter((r) => r.path === path)
+
+  return (
+    <>
+      {instances.map((r, i) => (
+        <RouteInstanceProvider key={i} route={r}>
+          <div key={i} className={isEqual(r, currentRoute) ? 'contents' : 'hidden'}>
+            {children}
+          </div>
+        </RouteInstanceProvider>
+      ))}
+    </>
+  )
 }

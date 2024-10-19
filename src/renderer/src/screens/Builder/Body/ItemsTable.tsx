@@ -1,12 +1,12 @@
 import { Table } from '@renderer/components/Table'
 import { categories } from '@renderer/constants/category'
 import { fileBuilderEventBus } from '@renderer/helpers/events'
+import { useRoute } from '@renderer/lib/Router'
 import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
 import { PurchaseData } from '@renderer/types/financy'
 import { formatCurrency } from '@renderer/utils'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
 
 type Filter = {
   category?: string
@@ -15,7 +15,7 @@ type Filter = {
 }
 
 export function ItemsTable() {
-  const id = useParams<{ id: string }>().id
+  const id = useRoute<{ id: string }>().params.id
   const getPurchases = useFileBuilderStore((s) => s.getPurchases)
 
   const [purchases, setPurchases] = useState<PurchaseData[]>(() => getPurchases(id!) ?? [])
@@ -56,14 +56,14 @@ export function ItemsTable() {
   }, [filter])
 
   useEffect(() => {
-    const addPurchaseListener = ({ projectId }) => {
+    const addPurchaseListener = (projectId: string) => {
       if (projectId === id) {
         updatePurchases()
       }
     }
 
-    const searchItemsListener = ({ search }) => {
-      if (!id) return
+    const searchItemsListener = (projectId: string, { search }) => {
+      if (!id || projectId !== id) return
 
       if (search === '') {
         setPurchases(getPurchases(id))
@@ -78,8 +78,8 @@ export function ItemsTable() {
       }
     }
 
-    const filterItemsListener = (filter) => {
-      if (!id) return
+    const filterItemsListener = (projectId: string, filter) => {
+      if (!id || projectId !== id) return
 
       setFilter(filter)
     }
