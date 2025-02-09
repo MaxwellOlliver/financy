@@ -1,6 +1,6 @@
 import { Fragment } from 'react/jsx-runtime'
 import { BuilderWrapper } from './BuilderWrapper'
-import { useRoute } from '@renderer/lib/Router'
+import { useRoute } from '@renderer/lib/router'
 
 export function Builder() {
   const { params, sameInstanceRoutes } = useRoute<{ id: string }>()

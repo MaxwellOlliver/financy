@@ -8,7 +8,7 @@ import { cn } from '@renderer/utils'
 import { useFileBuilderNavigationStore } from '@renderer/store/fileBuilderNavigationStore'
 import { v4 } from 'uuid'
 import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
-import { useNavigate, useRoute } from '@renderer/lib/Router'
+import { useNavigate, useRoute } from '@renderer/lib/router'
 
 interface FrameProps {
   children: React.ReactNode

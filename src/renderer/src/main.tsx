@@ -9,7 +9,6 @@ import { Routes } from './routes'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Routes />
-
     <Toaster position="top-center" reverseOrder={false} />
   </React.StrictMode>
 )

@@ -10,7 +10,7 @@ import { debounce } from 'lodash'
 import toast from 'react-hot-toast'
 import { HANDLER } from '@shared/constants/handlers'
 import { fileBuilderEventBus } from '@renderer/helpers/events'
-import { useNavigate } from '@renderer/lib/Router'
+import { useNavigate } from '@renderer/lib/router'
 
 interface BuilderWrapperProps {
   id: string

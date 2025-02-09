@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Modal } from '@renderer/components/Modal'
 import { Filter, X } from 'lucide-react'
-import { useRoute } from '@renderer/lib/Router'
+import { useRoute } from '@renderer/lib/router'
 
 type FormData = {
   minValue: number

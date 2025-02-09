@@ -5,7 +5,7 @@ import { categories } from '@renderer/constants/category'
 import { PurchaseData } from '@renderer/types/financy'
 import { fileBuilderEventBus } from '@renderer/helpers/events'
 import { Crown } from 'lucide-react'
-import { useRoute } from '@renderer/lib/Router'
+import { useRoute } from '@renderer/lib/router'
 
 function ChartsComponent() {
   const id = useRoute<{ id: string }>().params.id

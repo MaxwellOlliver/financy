@@ -10,7 +10,7 @@ import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { useRoute } from '@renderer/lib/Router'
+import { useRoute } from '@renderer/lib/router'
 
 type FinancyItemData = {
   purchaseName: string

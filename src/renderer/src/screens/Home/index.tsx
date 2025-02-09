@@ -4,7 +4,7 @@ import { useFileBuilderNavigationStore } from '@renderer/store/fileBuilderNaviga
 import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
 import { FinancyFileParser } from '@shared/lib'
 import toast from 'react-hot-toast'
-import { useNavigate } from '@renderer/lib/Router'
+import { useNavigate } from '@renderer/lib/router'
 
 export function Home() {
   const addTab = useFileBuilderNavigationStore((s) => s.addTab)

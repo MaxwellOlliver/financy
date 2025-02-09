@@ -1,7 +1,7 @@
 import { Table } from '@renderer/components/Table'
 import { categories } from '@renderer/constants/category'
 import { fileBuilderEventBus } from '@renderer/helpers/events'
-import { useRoute } from '@renderer/lib/Router'
+import { useRoute } from '@renderer/lib/router'
 import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
 import { PurchaseData } from '@renderer/types/financy'
 import { formatCurrency } from '@renderer/utils'

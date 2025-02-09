@@ -2,7 +2,7 @@ import { sidebarItems } from '@renderer/layout/config/sidebar'
 import { LogoText } from '../LogoText'
 import { useMemo } from 'react'
 import { cn } from '@renderer/utils'
-import { useNavigate, useRoute } from '@renderer/lib/Router'
+import { useNavigate, useRoute } from '@renderer/lib/router'
 
 export function Sidebar() {
   const route = useRoute()

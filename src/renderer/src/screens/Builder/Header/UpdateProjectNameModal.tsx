@@ -8,7 +8,7 @@ import { useFileBuilderStore } from '@renderer/store/fileBuilderStore'
 import { useFileBuilderNavigationStore } from '@renderer/store/fileBuilderNavigationStore'
 import { Input } from '@renderer/components/Input'
 import { fileBuilderEventBus } from '@renderer/helpers/events'
-import { useRoute } from '@renderer/lib/Router'
+import { useRoute } from '@renderer/lib/router'
 
 type FormData = {
   name: string
